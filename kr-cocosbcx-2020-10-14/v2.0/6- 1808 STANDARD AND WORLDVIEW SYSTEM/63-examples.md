@@ -1,0 +1,108 @@
+---
+title: "6.3 Examples"
+slug: "63-examples"
+hidden: false
+createdAt: "2019-06-25T08:46:18.778Z"
+updatedAt: "2019-06-25T08:47:15.306Z"
+---
+The 1808 standard has been built into the blockchain system in Cocos-BCX, and the external expansion is based on Lua's contract interface, which facilitates the program to operate on assets. See the Contract API for details.
+
+For specific application scenarios, we will give some examples below.
+
+
+##Game Scenes
+
+This is to introduce an example of the game items travelling the game world. In this example scenario, the game service authorizes the player's items to travel into their own game world with a fee. After the player passes the required assets by paying a fee, the game service will allow the player's items to enter the game world (contract system).
+
+The game service collects the ​required information from the zone data of the player’s items and submits it to the contract. Since there is a linkage with the previous game, the developer designs a linkage with the previous game skills (e.g. the 'eyes of hawk' shown in the following code), so that the items that travel to the game world can be equipped with the skill attributes.
+[block:code]
+{
+  "codes": [
+    {
+      "code": "--Contract function: Initialize game items that travel across the game world\n-- item_id:the ID of the item\n--Project Cocos-BCX\n-- original_skill:Skills in the original game\n-- add_skill:Linked skills added in this game\n-- add_description:Description added in this game’s zone data\nfunction init_item_from_another_world( item_id, original_skill, add_skill, add_description)\n--Non-empty judgment of information\nassert(original_skill~=nil,'null original skill info')\nassert(add_skill~=nil,'null add skill info')\nassert(add_description!=nil,'null description info')\nlocal add_skill_value='null'\n--Judge the skill information in the original game to get the skill information linked in the game\nlocal switch={\n['eyes of hawk']=function() add_skill_value='{\"VIT_UP\":25}' end\n['heart of lion']=function() add_skill_value='{\"STR_UP\":50}' end\n['speed of pard']=function() add_skill_value='{\"AGI_UP\":40}' end\n['wisdom of dwarf']=function() add_skill_value='{\"INT_UP\":30}' end\n}\nlocal res=switch[original_skill]\nif(res)then\nres()\n--Update the linked skill information to the zone data\nnht_describe_change( item_id, add_skill, add_skill_value)\nnht_describe_change( item_id, 'another_world_message', add_description)\nelse\nassert(res,'unexpected original game skill type')",
+      "language": "lua"
+    }
+  ]
+}
+[/block]
+
+##Implementation of Complex Business Models
+
+The Cocos-BCX chain adds a variety of atomic OP and data structures to enable possible new business. With the contract system, developers can easily implement complex financial business models on the blockchain, such as asset leasing, mortgages, pawns, and so on. These new business models will greatly improve the shortcomings of the ​lack of liquidity in the economic model of the traditional blockchain system to further activate market behaviors. Below is a brief introduction to the design of these three business models in BCX.
+
+**Lease** 
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/3f0fd35-a3e0644-36.png",
+        "a3e0644-36.png",
+        1297,
+        221,
+        "#f5f5f6"
+      ]
+    }
+  ]
+}
+[/block]
+Contract design：
+* Define the functions for the leasing business, such as initiating leases, transferring use right, reclaiming use right, inventory status queries, and inventory updates.
+* Define a pool of assets available for lease, with information such as the price tag.
+
+Process：
+* The owner adds asset information to be rented through the inventory update function in the contract and specifies the rent/calculation rules;
+* The lease is established after the tenant pay the rent via the function that initiates the lease;
+* The contract defines the black & white list of asset use right by transferring the use right function and transfers the use right to the tenant. The contract then transfers the rent to the owner's account, marks the status of the inventory asset as leased, and defines a timed task—calling the use right reclaim function upon expiration;
+*When the timed task expires, the use right reclaim function of the contract is called to transfer the asset use right back to the owner.
+
+
+ **Pledge** 
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/5d5f285-dde3b2d-37.png",
+        "dde3b2d-37.png",
+        1104,
+        305,
+        "#f6f6f7"
+      ]
+    }
+  ]
+}
+[/block]
+Contract design:
+* Define the functions of the pledging business, such as initiating pledges, transferring ownership, reclaiming use right, collateral status query, and setting up pledge-backed lists;
+* Define a collateral record structure with information on assets available for pledging and that on pledged assets.
+
+Process:
+* The pledgee sets the information of the items available for a pledge by setting the collateral list function, marking the pledge price or calculation rules, etc.;
+* The pledger transfers the ownership of the asset to the pledgee through the function that initiates​ the pledge, receives the deposit paid by the pledgee, updates the list of pledge records, and releases a timed task – the use right is transferred according to the status of redemption;
+* When the timed task expires, if the deposit payment and other conditions are not met, the contract's reclaim function is called to transfer the use right of the asset to the pledgee account through the use right change function.
+
+**Pawn** 
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/ccbe3fd-652b917-38.png",
+        "652b917-38.png",
+        1148,
+        358,
+        "#f7f7f7"
+      ]
+    }
+  ]
+}
+[/block]
+Contract design:
+* Define the functions of the pawn business, such as initiating pawn, transferring the use right, reclaiming ownership, the status query of a pawned item, and setting up a pawn list;
+* Define a pawn record structure with information for assets available for pawning and information on pawned assets.
+
+Process:
+* Pawnbroker sets the information of the items available for a ​pawn by setting the pawn list function, marking the pawn price or calculation rules, etc.;
+* The pawnor transfers the ownership of the asset to the Pawnbroker through the function that initiate the pawn, receives the deposit paid by the pawnor, updates the list of pawn records, and releases a timed task – It can be designed to return the deposit on a regular basis / pay interest on schedule / both modes as needed;
+* When the scheduled task expires, if the conditions such as the deposit payment are not met, the contract's ownership reclaim function is called to transfer the ownership of the asset to the pawnbroker's account through the ownership change OP. If the condition is met, the use right is transferred to the pawnor by the use right change OP.
