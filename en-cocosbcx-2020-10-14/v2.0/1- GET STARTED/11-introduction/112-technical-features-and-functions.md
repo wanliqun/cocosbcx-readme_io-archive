@@ -1,0 +1,39 @@
+---
+title: "1.1.2 Technical Features and Functions"
+slug: "112-technical-features-and-functions"
+hidden: false
+createdAt: "2019-06-24T06:02:00.712Z"
+updatedAt: "2019-06-24T06:37:28.807Z"
+---
+Cocos-BCX aims to build a complete runtime environment for multi-system games, providing blockchain game developers with the maximum convenience and an improved ecosystem, while bringing a brand-new gaming experience as well as gaming forms that are different from the previous ones to players. Users will enjoy considerable autonomy in the disposal of the game assets, and a fair and open gaming environment.
+
+Therefore, Cocos-BCX is designed to deliver the following technical features, including but not limited to:
+1.	A multi-platform game runtime environment with blockchain interoperable interfaces;
+2.	An improved consensus mechanism based on Delegate Proof-of-Stake (DPoS) and delegated witness mode;
+3.	A TestNet with improved data transmission and high-performance virtual machine;
+4.	A cross-chain exchange gateway supporting both homogeneous and non-homogeneous digital assets;
+5.	BCX-NHAS-1808 non-homogeneous digital asset standard;
+6.	An enhanced asset permission system;
+7.	Smart contracts executable across blocks;
+8.	Atomic transaction operation;
+9.	Support for consensus tasks at the syntax level;
+10.	Support for delegated transaction mechanism;
+11.	Small-scale consensus and random numbers;
+12.	On-chain trusted random process;
+13.	Support for minimum on-chain transaction validation cycles
+14.	Smart contracts support to key game functions, such as accurate timer, standby and heartbeat；
+15.	Transaction verification mechanism to prevent BP/developer from cheating.
+
+Meanwhile, Cocos-BCX provides functions including but not limited to:
+1.	Disintermediated assets (props) interoperable interfaces;
+2.	Examples of non-homogeneous assets circulation platform;
+3.	Player autonomy and the Smithy mechanism;
+4.	Visualized IDE (game program and contract visual edition);
+5.	Complete crypto wallet, user account system and block explorer;
+6.	Iterative smart contract system.
+
+Theoretically, the throughput of CocosChain TestNet can reach up to 100,000 tps. We tested 3,500 tps with a block interval of 3 seconds in the experimental environment, which means it takes 3 seconds for the information to be broadcasted to the entire network. The performance will be further improved after the completion of contract-defined partitioned consensus, multi-chain scaling and witness delegation. Key algorithms of most games can be run on blockchain, and “transaction confirmation with lowest latency” technology will further enhance the experience of the asset circulation process.
+
+Cocos-BCX TestNet based wallet will integrate with the asset circulation platform where users can evaluate the value of game coins, items and accounts based on the exchange rate of the game’s digital assets against the main chain’s base currency.
+
+Cocos-BCX is supported by COCOS Creator, a visual game editor, by which the game developed traditionally can be run in the Cocos-BCX blockchain runtime environment.
